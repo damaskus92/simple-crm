@@ -98,6 +98,9 @@ Pastikan untuk mengganti `DB_DATABASE`, `DB_USERNAME`, dan `DB_PASSWORD` sesuai 
 docker exec -it crm-app php artisan test
 ```
 
+Untuk pengujian menggunakan Postman, import file koleksi berikut ke postman:
+[Postman Collection](https://github.com/damaskus92/simple-crm/blob/main/resources/PostmanTest.postman_collection.json)
+
 ## Penulis
 
 [Damas Eka K](https://www.github.com/damaskus92)
