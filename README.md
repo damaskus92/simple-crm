@@ -1,27 +1,32 @@
 # API Simple CRM
 
-Proyek ini adalah REST-API yang dibangun menggunakan Laravel 11. API ini menyediakan endpoint untuk mengelola perusahaan dan karyawan.
+API Simple CRM adalah sebuah layanan **REST API** yang dikembangkan menggunakan **Laravel 11**. API ini dirancang untuk mendukung pengelolaan data perusahaan dan karyawan.
 
-Untuk melihat daftar lengkap endpoint API, silakan kunjungi [Dokumentasi API](http://localhost:8000/docs/api).
+## Packages
 
-> **Catatan**: Pastikan untuk menjalankan Docker terlebih dahulu sebelum mengakses link dokumentasi.
-
-## Persyaratan
-
-- PHP 8.2^
-- Composer
-- MySQL
-- Docker
+- [**PEST PHP**](https://pestphp.com): Framework yang digunakan untuk pengujian.
+- [**PEST Laravel plugin**](https://pestphp.com/docs/plugins#laravel): Plugin tambahan untuk integrasi PEST dengan Laravel.
+- [**JWT Auth**](https://github.com/php-open-source-saver/jwt-auth): Digunakan untuk autentikasi berbasis JWT (JSON Web Token).
+- [**Scramble**](https://scramble.dedoc.co): Digunakan untuk menghasilkan dokumentasi API otomatis.
 
 ## Daftar Isi
 
+- [Persyaratan](#persyaratan)
 - [Instalasi](#instalasi)
 - [Konfigurasi Awal](#konfigurasi-awal)
 - [Menjalankan Aplikasi](#menjalankan-aplikasi)
 - [Akses Layanan](#akses-layanan)
 - [Pengujian](#pengujian)
 
-## Instalasi
+### Persyaratan
+
+Pastikan Anda telah memenuhi persyaratan berikut sebelum memulai instalasi:
+
+- **PHP** 8.2^
+- **Composer**
+- **Docker** dan **Docker Compose**
+
+### Instalasi
 
 Ikuti langkah-langkah berikut untuk menginstal proyek ini:
 
@@ -41,64 +46,74 @@ Ikuti langkah-langkah berikut untuk menginstal proyek ini:
 
 ## Konfigurasi Awal
 
-Buat file `.env` dan salin konfigurasi dari `.env.example` kemudian atur koneksi database.
+1. Salin konfigurasi dari `.env.example` ke `.env`:
 
-```bash
-DB_CONNECTION=mysql
-DB_HOST=db
-DB_PORT=3306
-DB_DATABASE=simple_crm_db
-DB_USERNAME=root
-DB_PASSWORD=secret
-```
+    ```bash
+    cp .env.example .env
+    ```
 
-Pastikan untuk mengganti `DB_DATABASE`, `DB_USERNAME`, dan `DB_PASSWORD` sesuai dengan konfigurasi Anda.
+2. Atur konfigurasi database di file `.env`:
 
-## Menjalankan Aplikasi
+    ```plaintext
+    DB_CONNECTION=mysql
+    DB_HOST=db
+    DB_PORT=3306
+    DB_DATABASE=simple_crm_db
+    DB_USERNAME=root
+    DB_PASSWORD=secret
+    ```
 
-1. Gunakan Docker Compose untuk membangun dan memulai kontainer:
+   **Catatan**: Sesuaikan `DB_DATABASE`, `DB_USERNAME`, dan `DB_PASSWORD` dengan konfigurasi yang Anda inginkan.
+
+### Menjalankan Aplikasi
+
+1. **Bangun dan jalankan kontainer** menggunakan Docker Compose:
 
     ```bash
     docker-compose up -d
     ```
 
-2. Install dependensi Composer
+    Perintah ini akan membangun dan menjalankan kontainer `crm-app`, `crm-webserver`, `crm-db` dan `crm-phpmyadmin`.
+
+2. **Install dependensi Composer**:
 
     ```bash
     docker exec -it crm-app composer install
     ```
 
-3. Generate aplikasi key
+3. **Generate application key**:
 
     ```bash
     docker exec -it crm-app php artisan key:generate
     ```
 
-4. Jalankan Queue Worker untuk memproses job di background
+4. **Jalankan Queue Worker** untuk memproses job di latar belakang:
 
     ```bash
     docker exec -it crm-app php artisan queue:work
     ```
 
-5. Jalankan migrasi dan juga seeder untuk menghasilkan data default
+5. **Jalankan migrasi dan seeder** untuk menginisialisasi database dengan data default:
 
     ```bash
     docker exec -it crm-app php artisan migrate
     docker exec -it crm-app php artisan db:seed
     ```
 
-## Akses Layanan
+### Akses Layanan
 
 - **Dokumentasi API**: [http://localhost:8000/docs/api](http://localhost:8000/docs/api)
 - **phpMyAdmin**: [http://localhost:8001](http://localhost:8001)
 
-## Pengujian
+### Pengujian
+
+Untuk menjalankan pengujian otomatis:
 
 ```bash
 docker exec -it crm-app php artisan test
 ```
 
-Untuk pengujian menggunakan Postman, import file koleksi berikut ke postman:
+Untuk pengujian manual menggunakan Postman, impor koleksi berikut:
 [Postman Collection](https://github.com/damaskus92/simple-crm/blob/main/resources/PostmanTest.postman_collection.json)
 
 ## Penulis
